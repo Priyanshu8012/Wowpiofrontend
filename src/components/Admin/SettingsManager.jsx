@@ -3,6 +3,9 @@ import { Lock, AlertCircle, CheckCircle2, User } from 'lucide-react';
 import { changePassword, getMe, updateAdminProfile } from '../../api/auth.api.js';
 import { API_ORIGIN } from '../../config/api.js';
 import ImageUploader from './ImageUploader.jsx';
+import { getSettings, updateSettings } from '../../api/settings.api.js';
+import { clearSettingsCache } from '../BrandLogo.jsx';
+
 
 
 const DEFAULTS = {
@@ -15,6 +18,10 @@ export default function SettingsManager({ onProfileUpdate }) {
   const [profile, setProfile] = useState(DEFAULTS);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileSaving, setProfileSaving] = useState(false);
+
+  const [logoUrl, setLogoUrl] = useState('');
+  const [settingsLoading, setSettingsLoading] = useState(true);
+  const [settingsSaving, setSettingsSaving] = useState(false);
 
   const [formData, setFormData] = useState({
     currentPassword: '',
@@ -42,6 +49,41 @@ export default function SettingsManager({ onProfileUpdate }) {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const settings = await getSettings();
+        setLogoUrl(settings.logoUrl || '/logo.png');
+      } catch (e) {
+        console.error('Failed to load settings', e);
+      } finally {
+        setSettingsLoading(false);
+      }
+    })();
+  }, []);
+
+  const handleSettingsSave = async (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setSuccessMsg('');
+    try {
+      setSettingsSaving(true);
+      const updated = await updateSettings({ logoUrl });
+      setLogoUrl(updated.logoUrl || '/logo.png');
+      clearSettingsCache();
+      
+      // Dispatch a custom event to notify all listening BrandLogo components that the logo changed!
+      window.dispatchEvent(new Event('logoChanged'));
+      
+      setSuccessMsg('Brand settings updated successfully!');
+      setTimeout(() => setSuccessMsg(''), 3000);
+    } catch (error) {
+      setErrorMsg(error.response?.data?.message || 'Failed to update brand settings');
+    } finally {
+      setSettingsSaving(false);
+    }
+  };
 
   const handleProfileSave = async (e) => {
     e.preventDefault();
@@ -207,6 +249,51 @@ export default function SettingsManager({ onProfileUpdate }) {
                   className="rounded-xl bg-[#C9A259] px-8 py-3 font-heading text-sm font-bold uppercase tracking-[0.12em] text-[#0C0C0C] hover:bg-[#A8893F] disabled:opacity-50"
                 >
                   {profileSaving ? 'Saving…' : 'Save profile'}
+                </button>
+              </div>
+            </>
+          )}
+        </form>
+      </div>
+
+      {/* Brand Settings */}
+      <div>
+        <h2 className="font-heading text-2xl font-bold text-white">Brand Settings</h2>
+        <p className="mt-1 text-sm text-white/50">
+          Update the global brand logo shown in the navigation bar and footer.
+        </p>
+
+        <form
+          onSubmit={handleSettingsSave}
+          className="mt-5 flex flex-col gap-6 rounded-2xl border border-white/10 bg-white/[0.04] p-6 lg:p-8"
+        >
+          {settingsLoading ? (
+            <p className="text-sm text-white/40">Loading settings…</p>
+          ) : (
+            <>
+              <div>
+                <label className="mb-2 block text-xs font-medium text-white/60">
+                  Global Brand Logo
+                </label>
+                <ImageUploader
+                  currentImage={logoUrl === '/logo.png' ? '' : logoUrl}
+                  allowVideo={false}
+                  fallbackImage="/logo.png"
+                  fallbackLabel="Default WOWPIO Logo"
+                  onUploadSuccess={(url) => setLogoUrl(url || '/logo.png')}
+                />
+                <p className="mt-2 text-[11px] text-white/35">
+                  Upload a custom logo. Leave empty / reset to fall back to the default WOWPIO logo.
+                </p>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={settingsSaving}
+                  className="rounded-xl bg-[#C9A259] px-8 py-3 font-heading text-sm font-bold uppercase tracking-[0.12em] text-[#0C0C0C] hover:bg-[#A8893F] disabled:opacity-50"
+                >
+                  {settingsSaving ? 'Saving…' : 'Save logo'}
                 </button>
               </div>
             </>
