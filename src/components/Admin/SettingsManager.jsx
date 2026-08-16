@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Lock, AlertCircle, CheckCircle2, User } from 'lucide-react';
 import { changePassword, getMe, updateAdminProfile } from '../../api/auth.api.js';
 import { API_ORIGIN } from '../../config/api.js';
+import ImageUploader from './ImageUploader.jsx';
+
 
 const DEFAULTS = {
   displayName: 'WOWPIO Admin',
