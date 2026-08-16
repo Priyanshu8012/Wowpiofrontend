@@ -7,7 +7,7 @@ import { API_ORIGIN } from '../config/api.js';
 let globalSettingsCache = null;
 let globalSettingsPromise = null;
 
-const getCachedSettings = () => {
+export const getCachedSettings = () => {
   if (globalSettingsCache) return Promise.resolve(globalSettingsCache);
   if (globalSettingsPromise) return globalSettingsPromise;
   globalSettingsPromise = getSettings()

@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { getCachedSettings } from './BrandLogo.jsx';
+import { API_ORIGIN } from '../config/api.js';
 
 const TAGLINES = [
   'Purity in every drop…',
@@ -23,6 +25,17 @@ export default function Preloader({ onComplete }) {
   const [percent, setPercent] = useState(0);
   const [done, setDone] = useState(false);
   const [taglineIndex, setTaglineIndex] = useState(0);
+  const [logoUrl, setLogoUrl] = useState('/logo.png');
+
+  useEffect(() => {
+    getCachedSettings().then(data => {
+      setLogoUrl(data.logoUrl || '/logo.png');
+    });
+  }, []);
+
+  const logoSrc = logoUrl
+    ? (logoUrl.startsWith('http') || (logoUrl.startsWith('/') && !logoUrl.startsWith('/uploads')) ? logoUrl : `${API_ORIGIN}${logoUrl}`)
+    : '/logo.png';
 
   const bubbles = useMemo(
     () =>
@@ -98,7 +111,7 @@ export default function Preloader({ onComplete }) {
             transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
           />
           <img
-            src="/logo.png"
+            src={logoSrc}
             alt="WOWPIO"
             className="relative z-10 h-28 w-auto object-contain drop-shadow-[0_12px_40px_rgba(201,162,89,0.25)] sm:h-36 md:h-40"
             draggable={false}
