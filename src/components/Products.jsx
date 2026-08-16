@@ -15,7 +15,9 @@ import {
 import { getProducts } from '../api/product.api.js';
 
 const MotionLink = motion.create(Link);
-const API_BASE = 'http://localhost:5000';
+import { API_ORIGIN } from '../config/api.js';
+
+const API_BASE = API_ORIGIN;
 const tabs = ['All', 'Conference', 'Daily', 'Bulk'];
 
 const highlights = [

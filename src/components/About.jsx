@@ -18,7 +18,9 @@ import natureImg from '../assets/wowpio-nature-source.png';
 import bottlingImg from '../assets/wowpio-bottling-line.png';
 import bottleImg from '../assets/wowpio-bottle.png';
 
-const API_BASE = 'http://localhost:5000';
+import { API_ORIGIN } from '../config/api.js';
+
+const API_BASE = API_ORIGIN;
 
 function Counter({ target, duration = 1600, suffix = '' }) {
   const [count, setCount] = useState(0);

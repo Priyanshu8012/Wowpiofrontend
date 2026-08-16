@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Save } from 'lucide-react';
 import { getProducts, createProduct, updateProduct, deleteProduct } from '../../api/product.api.js';
 import ImageUploader from './ImageUploader.jsx';
+import { API_ORIGIN } from '../../config/api.js';
 
 export default function ProductManager() {
     const [products, setProducts] = useState([]);
@@ -254,7 +255,7 @@ export default function ProductManager() {
                             <div className="flex items-center gap-4 mb-4 flex-grow">
                                 <div className="w-20 h-24 bg-white/5 rounded-lg flex items-center justify-center shrink-0 p-2 border border-white/5">
                                     {product.imageUrl ? (
-                                        <img src={`http://localhost:5000${product.imageUrl}`} alt={product.name} className="max-w-full max-h-full object-contain filter drop-shadow-md" />
+                                        <img src={`${API_ORIGIN}${product.imageUrl}`} alt={product.name} className="max-w-full max-h-full object-contain filter drop-shadow-md" />
                                     ) : (
                                         <span className="text-[10px] text-white/30">No Img</span>
                                     )}

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Droplets, Award } from 'lucide-react';
 import bottleImgDefault from '../assets/wowpio-bottle.png';
 import { getHeroData } from '../api/hero.api.js';
+import { API_ORIGIN } from '../config/api.js';
 
 const MotionLink = motion.create(Link);
 
@@ -38,7 +39,7 @@ export default function Hero() {
     heroData?.description ||
     'WOWPIO brings mineral-balanced drinking water — multi-stage purified, hygienically sealed, and crafted for everyday freshness at home and work.';
   const bottleImg = heroData?.imageUrl
-    ? `http://localhost:5000${heroData.imageUrl}`
+    ? `${API_ORIGIN}${heroData.imageUrl}`
     : bottleImgDefault;
   const heroIsVideo =
     heroData?.mediaType === 'video' ||

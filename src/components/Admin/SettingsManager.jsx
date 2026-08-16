@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Lock, AlertCircle, CheckCircle2, User } from 'lucide-react';
 import { changePassword, getMe, updateAdminProfile } from '../../api/auth.api.js';
-import ImageUploader from './ImageUploader.jsx';
+import { API_ORIGIN } from '../../config/api.js';
 
 const DEFAULTS = {
   displayName: 'WOWPIO Admin',
@@ -140,7 +140,7 @@ export default function SettingsManager({ onProfileUpdate }) {
                     src={
                       profile.avatarUrl.startsWith('http')
                         ? profile.avatarUrl
-                        : `http://localhost:5000${profile.avatarUrl}`
+                        : `${API_ORIGIN}${profile.avatarUrl}`
                     }
                     alt=""
                     className="h-14 w-14 rounded-full object-cover"

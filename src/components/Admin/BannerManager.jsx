@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, GripVertical, Save } from 'lucide-react';
 import { getAllBanners, createBanner, updateBanner, deleteBanner, reorderBanners } from '../../api/banner.api.js';
 import ImageUploader from './ImageUploader.jsx';
+import { API_ORIGIN } from '../../config/api.js';
 
 export default function BannerManager() {
     const [banners, setBanners] = useState([]);
@@ -242,13 +243,13 @@ export default function BannerManager() {
                                 {banner.imageUrl ? (
                                     banner.mediaType === 'video' || /\.(mp4|webm|mov|m4v)$/i.test(banner.imageUrl) ? (
                                       <video
-                                        src={`http://localhost:5000${banner.imageUrl}`}
+                                        src={`${API_ORIGIN}${banner.imageUrl}`}
                                         className="h-full w-full object-cover"
                                         muted
                                         playsInline
                                       />
                                     ) : (
-                                      <img src={`http://localhost:5000${banner.imageUrl}`} alt="thumb" className="w-full h-full object-cover" />
+                                      <img src={`${API_ORIGIN}${banner.imageUrl}`} alt="thumb" className="w-full h-full object-cover" />
                                     )
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-xs text-white/30">No media</div>

@@ -21,6 +21,7 @@ import {
   Bot,
 } from 'lucide-react';
 import BrandLogo from '../BrandLogo';
+import { API_ORIGIN } from '../../config/api.js';
 import BannerManager from './BannerManager.jsx';
 import HeroManager from './HeroManager.jsx';
 import TestimonialManager from './TestimonialManager.jsx';
@@ -240,7 +241,7 @@ export default function AdminDashboard() {
               src={
                 profile.avatarUrl.startsWith('http')
                   ? profile.avatarUrl
-                  : `http://localhost:5000${profile.avatarUrl}`
+                  : `${API_ORIGIN}${profile.avatarUrl}`
               }
               alt=""
               className="h-9 w-9 rounded-full object-cover"

@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { API_ORIGIN } from '../config/api.js';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: `${API_ORIGIN}/api`,
 });
 
 // Interceptor to add JWT token from localStorage

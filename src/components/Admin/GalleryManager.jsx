@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Save } from 'lucide-react';
 import { getGalleryItems, createGalleryItem, updateGalleryItem, deleteGalleryItem } from '../../api/gallery.api.js';
 import ImageUploader from './ImageUploader.jsx';
+import { API_ORIGIN } from '../../config/api.js';
 
 export default function GalleryManager() {
     const [items, setItems] = useState([]);
@@ -193,7 +194,7 @@ export default function GalleryManager() {
                                 {item.imageUrl ? (
                                     item.mediaType === 'video' || /\.(mp4|webm|mov|m4v)$/i.test(item.imageUrl) ? (
                                       <video
-                                        src={`http://localhost:5000${item.imageUrl}`}
+                                        src={`${API_ORIGIN}${item.imageUrl}`}
                                         className="h-full w-full object-cover opacity-90"
                                         muted
                                         loop
@@ -201,7 +202,7 @@ export default function GalleryManager() {
                                         autoPlay
                                       />
                                     ) : (
-                                      <img src={`http://localhost:5000${item.imageUrl}`} alt={item.title} className="w-full h-full object-cover opacity-80" />
+                                      <img src={`${API_ORIGIN}${item.imageUrl}`} alt={item.title} className="w-full h-full object-cover opacity-80" />
                                     )
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-white/30">No media</div>

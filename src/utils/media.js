@@ -1,4 +1,6 @@
-const API_BASE = 'http://localhost:5000';
+import { API_ORIGIN } from '../config/api.js';
+
+const API_BASE = API_ORIGIN;
 const VIDEO_EXT = /\.(mp4|webm|mov|m4v)(\?|$)/i;
 
 export function isVideoUrl(url = '', mediaType) {
